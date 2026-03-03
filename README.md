@@ -119,11 +119,17 @@ sandbox_mode = "workspace-write"
 
 personality = "pragmatic"
 web_search = "live"
-network_access = true
 disable_response_storage = true
 
 [features]
 multi_agent = true
+
+[sandbox_workspace_write]
+network_access = true
+
+[agents]
+max_threads = 5
+max_depth = 1
 ```
 
 关键参数速记：
@@ -132,6 +138,8 @@ multi_agent = true
 - `model_reasoning_effort`：推理深度，越高通常越贵
 - `sandbox_mode`：建议先用 `workspace-write`，兼顾安全和效率
 - `web_search = "live"`：需要实时信息时更有用
+- `max_threads = 5`：单轮最大并行子任务数（保守限制）
+- `max_depth = 1`：禁止子代理再开子代理，避免递归失控
 
 > 说明：本文档按 Codex CLI `v0.106.0` 适配；不同版本或供应商字段名可能有差异，请以你本地 CLI 支持为准。
 
