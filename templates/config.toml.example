@@ -1,26 +1,42 @@
-# codex-turbo 示例配置（适配 Codex CLI v0.104.0）
+# codex-turbo 示例配置
 # 按你实际环境调整；不同 provider 字段可能略有差异。
 
+# 模型提供方（后端路由/供应商标识），这里是 cch
 model_provider = "cch"
+
+# 具体使用的模型名称
 model = "gpt-5.3-codex"
+
+# 推理强度：xhigh 表示更深推理，通常更慢、成本更高，但结果更稳
 model_reasoning_effort = "xhigh"
+
+# 沙箱模式：workspace-write = 可读全项目、可写工作区（受工作区边界限制）
 sandbox_mode = "workspace-write"
 
+# 助手人格风格：pragmatic = 偏务实、直接
 personality = "pragmatic"
+
+# 网页搜索模式：live = 允许实时联网检索最新信息
 web_search = "live"
-network_access = true
+
+# 禁止存储响应内容（隐私更强，通常不保留会话输出）
 disable_response_storage = true
 
 [features]
+# 启用多代理并行能力
 multi_agent = true
 
+[sandbox_workspace_write]
+# 在 workspace-write 模式下允许网络访问
+network_access = true
 
 [agents]
-# 最大的agents 的数量，设置的比较保守为 5
-max_threads = 5 
-# 1 层深度，避免子代理开子代理
+# 最大并行子代理数量（这里限制为 5，偏保守）
+max_threads = 5
+
+# 子代理最大递归深度：1 = 只允许一层，避免“子代理再开子代理”
 max_depth = 1
 
 # 可选：如果你要保守一点，可改成：
-# sandbox_mode = "read-only"
-# model_reasoning_effort = "high"
+# sandbox_mode = "read-only" # 只读沙箱，不允许写文件
+# model_reasoning_effort = "medium"# 推理强度降级，速度/成本更均衡
