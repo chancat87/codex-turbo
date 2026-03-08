@@ -5,6 +5,7 @@
 ### 🎯 版本主题
 - **模型升级至 GPT-5.4** - 同步最新模型能力，优化成本与性能平衡
 - **原生记忆功能支持** - 启用 memories 实现跨会话上下文连贯性
+- **WebSocket 支持** - 实现实时流式响应，提升交互体验
 - **适配版本升级** - 全面适配 Codex CLI v0.111.0 新特性
 
 ---
@@ -15,7 +16,7 @@
 - **模型升级**：`gpt-5.3-codex` → `gpt-5.4`
 - **推理强度调整**：`xhigh` → `high`
   - 在 GPT-5.4 上 `high` 已能提供优秀的推理质量
-  - 显著降低 token 成本，提升响应速度
+  - 降低 token 成本，提升响应速度
 - **新增规划模式推理强度**：`plan_mode_reasoning_effort = "xhigh"`
   - 规划阶段使用更高推理强度，避免方向性错误
 
@@ -27,28 +28,31 @@
 - 支持从对话中自动提取关键信息
 - 跨会话自动归并记忆，提升长期上下文连贯性
 
-#### 3️⃣ 适配版本升级至 v0.111.0
+#### 3️⃣ WebSocket 实时流式响应支持
+- 新增 `[features]` 区块配置：`responses_websockets_v2 = true`
+- 启用 WebSocket 实现实时流式响应，提升交互体验
+- 自动回退机制：若中转站不支持 WebSocket，自动降级到常规 HTTP 响应
+- ⚠️ **注意**：并非所有中转站都支持 WebSocket，请根据实际情况测试
+
+#### 4️⃣ 新增配置项
+- `suppress_unstable_features_warning = true` - 抑制开发中功能警告
+- `[tui]` 区块 - 状态栏自定义配置
+  - `status_line` - 可配置显示模型、分支、剩余上下文等信息
+
+#### 5️⃣ 适配版本升级至 v0.111.0
 - 更新 README.md 版本引用（4 处）
 - 更新 CHANGELOG.md 历史版本记录
 - 更新 AGENTS.template.md 版本信息
 - 更新 config.toml.example 配置模板
 
-#### 4️⃣ README 文档完善
+#### 6️⃣  README 文档完善
 - 新增"启用原生记忆功能"步骤说明
 - 更新最小配置示例，加入 memories 配置
 - 在核心要点中新增原生记忆要点（🧠）
 - 在关键参数速记中补充 memories 说明
 
-#### 5️⃣ 新增配置项
-- `suppress_unstable_features_warning = true` - 抑制开发中功能警告
-- `[tui]` 区块 - 状态栏自定义配置
-  - `status_line` - 可配置显示模型、分支、剩余上下文等信息
 
-#### 6️⃣ WebSocket 实时流式响应支持
-- 新增 `[features]` 区块配置：`responses_websockets_v2 = true`
-- 启用 WebSocket 实现实时流式响应，提升交互体验
-- 自动回退机制：若中转站不支持 WebSocket，自动降级到常规 HTTP 响应
-- ⚠️ **注意**：并非所有中转站都支持 WebSocket，请根据实际情况测试
+
 
 ---
 
@@ -84,17 +88,14 @@
    [features]
    multi_agent = true
    memories = true
-   
+   responses_websockets_v2 = true
+
    [memories]
    extract_model = "gpt-5.4"
    consolidation_model = "gpt-5.4"
    ```
 
-3. **在 CLI 中启用 Memories**
-   - 进入 `/experimental`
-   - 勾选 `Memories`
-
-4. **验证版本**
+3. **验证版本**
    - 确保 Codex CLI 版本为 `v0.111.0`
    - 执行 `codex --version` 检查
 
@@ -105,7 +106,8 @@
 1. **模型变更** - GPT-5.4 与 GPT-5.3-codex 的响应风格可能略有差异，建议先小范围测试
 2. **成本优化** - `high` 相比 `xhigh` 显著降低成本，但复杂任务可考虑临时提升至 `xhigh`
 3. **记忆功能** - 首次启用可能需要一定时间积累记忆，效果随使用次数提升
-4. **版本依赖** - 基于 Codex CLI `v0.111.0` 验证，低版本可能存在字段差异
+4. **WebSocket 支持** - `responses_websockets_v2 = true` 启用实时流式响应；若中转站不支持，会报错但不会自动回退
+5. **版本依赖** - 基于 Codex CLI `v0.111.0` 验证，低版本可能存在字段差异
 
 ---
 
