@@ -44,15 +44,21 @@
 - `[tui]` 区块 - 状态栏自定义配置
   - `status_line` - 可配置显示模型、分支、剩余上下文等信息
 
+#### 6️⃣ WebSocket 实时流式响应支持
+- 新增 `[features]` 区块配置：`responses_websockets_v2 = true`
+- 启用 WebSocket 实现实时流式响应，提升交互体验
+- 自动回退机制：若中转站不支持 WebSocket，自动降级到常规 HTTP 响应
+- ⚠️ **注意**：并非所有中转站都支持 WebSocket，请根据实际情况测试
+
 ---
 
 ### 📊 统计数据
 
 **文件变更：**
-- `README.md` - 新增记忆功能指南，更新配置示例
+- `README.md` - 新增记忆功能和 WebSocket 指南，更新配置示例
 - `CHANGELOG.md` - 新增 v1.2.0 版本记录
 - `templates/AGENTS.template.md` - 更新版本信息
-- `templates/config.toml.example` - 升级模型配置，新增 memories 配置
+- `templates/config.toml.example` - 升级模型配置，新增 memories 和 WebSocket 配置
 
 ---
 

@@ -3,29 +3,23 @@
 
 # 模型提供方（后端路由/供应商标识），这里是 cch
 model_provider = "cch"
-
 # 具体使用的模型名称
 model = "gpt-5.4"
-
 # 推理强度：5.4 默认改为high
 model_reasoning_effort = "high"
-
 # 规划模式下的推理轻度： 更好的规划结果避免方向性错误，推荐设置为 xhigh
 plan_mode_reasoning_effort = "xhigh"
 
 # 沙箱模式：workspace-write = 可读全项目、可写工作区（受工作区边界限制）
 sandbox_mode = "workspace-write"
-
 # 助手人格风格：pragmatic = 偏务实、直接
 personality = "pragmatic"
-
 # 网页搜索模式：live = 允许实时联网检索最新信息
 web_search = "live"
-
 # 禁止存储响应内容
 disable_response_storage = true
 
-# 开发中的功能启用的警告的抑制
+# 🔥抑开发中的功能的警告
 suppress_unstable_features_warning = true
 
 [features]
@@ -33,6 +27,8 @@ suppress_unstable_features_warning = true
 multi_agent = true
 # 启用原生记忆功能
 memories = true
+# 启用websocket支持，⚠️ 不是所有的中转站都支持，不支持会自动回退
+responses_websockets_v2 = true
 
 [sandbox_workspace_write]
 # 在 workspace-write 模式下允许网络访问
@@ -41,14 +37,12 @@ network_access = true
 [agents]
 # 最大并行子代理数量（这里限制为 5，偏保守）
 max_threads = 5
-
 # 子代理最大递归深度：1 = 只允许一层，避免“子代理再开子代理”
 max_depth = 1
 
 [memories]
 # 阶段 1：从单个对话线程中提取记忆时使用的模型
 extract_model = "gpt-5.4"
-
 # 阶段 2：将多条线程记忆做归并 / 整理时使用的模型
 consolidation_model = "gpt-5.4"
 

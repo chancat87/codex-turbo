@@ -8,6 +8,7 @@
 
 - 💡 **并行工作流**：`multi_agent = true` 最大并行度与最小阻塞设计
 - 🧠 **原生记忆**：`memories = true` 自动提取和归并对话记忆，提升上下文连贯性
+- 🔌 **WebSocket 支持**：`responses_websockets_v2 = true` 启用实时流式响应，不支持自动回退
 - 🎯 **对话风格**：强视觉边界、emoji 编号、直而短句的终端输出规范
 - 📝 **标准契约**：子代理任务下发的清晰指令模板（名称/目标/动作/结果）
 - ⚙️ **并发控制**：`max_threads = 5` 保守限制单轮最大子任务数
@@ -68,12 +69,8 @@ multi_agent = true
 
 ### 4. 启用原生记忆功能
 
-在 Codex CLI 内执行：
 
-1. 进入 `/experimental`
-2. 勾选 `Memories`
-
-然后检查 `~/.codex/config.toml` 是否包含：
+检查 `~/.codex/config.toml` 是否包含：
 
 ```toml
 [features]
@@ -86,7 +83,20 @@ consolidation_model = "gpt-5.4"
 
 > 原生记忆功能支持从对话中提取记忆，并在多会话间自动归并，提升上下文连贯性。
 
-### 5. 放置模板
+### 5. 开启 WebSocket 支持
+
+检查 `~/.codex/config.toml` 是否包含：
+
+```toml
+[features]
+responses_websockets_v2 = true
+```
+
+> 如果没有这段，可以手动补上。
+
+> **注意**：WebSocket 模式启用后，若中转站不支持会会回退到普通模式。
+
+### 6. 放置模板
 
 把本仓库模板放到你的用户目录。你可以按场景二选一：
 
@@ -106,7 +116,7 @@ cp templates/config.toml.example ~/.codex/config.toml.template
 
 然后自行对比并合并关键差异（按你习惯用 diff 或编辑器 merge）。
 
-### 6. 最小验证
+### 7. 最小验证
 
 用一个 20~30 分钟的小任务测试：
 
@@ -120,7 +130,7 @@ cp templates/config.toml.example ~/.codex/config.toml.template
 - 输出质量可控，不是“快但乱”
 - token 成本在你的预算范围内
 
-### 7. 推荐迭代节奏
+### 8. 推荐迭代节奏
 
 1. 先抄模板直接跑
 2. 跑完一轮再裁剪规则
@@ -128,7 +138,7 @@ cp templates/config.toml.example ~/.codex/config.toml.template
 
 做到这三步，基本就进入正循环了。
 
-### 8. 推荐最小配置（已合并）
+### 9. 推荐最小配置（已合并）
 
 下面这份 `~/.codex/config.toml` 最小配置，够你先稳定跑起来：
 
@@ -145,6 +155,7 @@ disable_response_storage = true
 [features]
 multi_agent = true
 memories = true
+responses_websockets_v2 = true
 
 [sandbox_workspace_write]
 network_access = true
@@ -162,6 +173,7 @@ consolidation_model = "gpt-5.4"
 
 - `multi_agent = true`：多代理总开关（最重要）
 - `memories = true`：启用原生记忆功能，提升上下文连贯性
+- `responses_websockets_v2 = true`：启用 WebSocket 实时流式响应，不支持自动回退
 - `model_reasoning_effort`：推理深度，越高通常越贵
 - `sandbox_mode`：建议先用 `workspace-write`，兼顾安全和效率
 - `web_search = "live"`：需要实时信息时更有用
