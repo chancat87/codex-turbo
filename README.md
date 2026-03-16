@@ -28,12 +28,16 @@
 
 ```text
 .
-├── README.md
-├── docs
-│   └── faq.md
-└── templates
-    ├── AGENTS.template.md
-    └── config.toml.example
+├── README.md              # 中文文档（本页）
+├── README.en.md           # English Documentation
+├── docs/
+│   ├── faq.md             # 中文 FAQ
+│   └── faq.en.md          # English FAQ
+└── templates/
+    ├── AGENTS.template.md     # 中文开发原则模板
+    ├── AGENTS.template.en.md  # English Development Guidelines
+    ├── config.toml.example    # 中文配置模板
+    └── config.toml.en.example # English Config Template
 ```
 
 ## 快速上手（5 分钟）
@@ -73,8 +77,8 @@ cp templates/config.toml.example ~/.codex/config.toml
 
 - `README.md`：快速上手（本页）
 - `docs/faq.md`：常见坑与排查
-- `templates/AGENTS.template.md`：开箱可改模板
-- `templates/config.toml.example`：参考配置
+- `templates/AGENTS.template.md`：开发原则与输出风格模板
+- `templates/config.toml.example`：系统配置模板（含 `developer_instructions`）
 
 ## 适用范围提醒
 
