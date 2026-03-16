@@ -1,5 +1,7 @@
 # codex-turbo
 
+English | [简体中文](./README.md)
+
 Curated configuration templates based on Codex native features, with restrained extensions, pursuing faster, more stable, and more reusable workflows.
 
 > Current compatible version: **Codex CLI v0.114.0**

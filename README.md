@@ -1,5 +1,7 @@
 # codex-turbo
 
+[English](./README.en.md) | 简体中文
+
 分享基于 Codex 原生功能的配置模板，克制功能扩展，追求更快、更稳、更可复用。
 
 > 当前项目适配版本：**Codex CLI v0.114.0**
