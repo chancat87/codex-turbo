@@ -14,9 +14,9 @@
 - 🔌 **WebSocket 支持**：`responses_websockets_v2 = true` 启用实时流式响应，不支持自动回退
 - 🎯 **对话风格**：强视觉边界、emoji 编号、直而短句的终端输出规范
 - 📝 **标准契约**：子代理任务下发的清晰指令模板（名称/目标/动作/结果）
-- ⚙️ **并发控制**：`max_threads = 5` 保守限制单轮最大子任务数
+- ⚙️ **并发控制**：`max_threads = 10` 自定义单轮最大子任务数
 - ⚠️ **风险管控**：危险操作确认机制与不可变原则
-- 📋 **可复制模板**：开箱即用的 `AGENTS.template.md` 与 `config.toml.example`
+- 📋 **可复制模板**：开箱即用的 `AGENTS.template.md` 与 `config.template.toml`
 
 ## 为什么做这个仓库
 
@@ -30,16 +30,22 @@
 
 ```text
 .
-├── README.md              # 中文文档（本页）
-├── README.en.md           # English Documentation
-├── docs/
-│   ├── faq.md             # 中文 FAQ
-│   └── faq.en.md          # English FAQ
+├── README.md                  # 中文文档（本页）
+├── README.en.md               # English Documentation
 └── templates/
-    ├── AGENTS.template.md     # 中文开发原则模板
-    ├── AGENTS.template.en.md  # English Development Guidelines
-    ├── config.toml.example    # 中文配置模板
-    └── config.toml.en.example # English Config Template
+    ├── cn/                        # 中文模板
+    │   ├── AGENTS.template.md         # 开发原则与输出风格
+    │   ├── config.template.toml       # 系统配置模板
+    │   ├── agents/                    # 子代理配置
+    │   │   ├── explorer.toml
+    │   │   └── worker.toml
+    │   └── skills/                    # 技能模板
+    │       └── terminal-dialog-style/
+    └── en/                        # English Templates
+        ├── AGENTS.template.en.md
+        ├── config.toml.en.example
+        ├── agents/
+        └── skills/
 ```
 
 ## 快速上手（5 分钟）
@@ -59,41 +65,35 @@ cd codex-turbo
 
 | 文件 | 用途 | 目标位置 |
 |------|------|----------|
-| `templates/config.toml.example` | 系统配置（含 `developer_instructions` 并行工作规范） | `~/.codex/config.toml` |
-| `templates/AGENTS.template.md` | 开发原则与输出风格指南 | `~/.codex/AGENTS.md` |
+| `templates/cn/config.template.toml` | 核心的系统配置（含 `developer_instructions` 并行工作规范） | `~/.codex/config.toml` |
+| `templates/cn/AGENTS.template.md` | 开发原则与输出风格指南 | `~/.codex/AGENTS.md` |
+
+> config.toml 请根据服务商的要求自行完善 key 等供应商信息。
 
 **首次使用（直接复制）**：
 
 ```bash
-cp templates/AGENTS.template.md ~/.codex/AGENTS.md
-cp templates/config.toml.example ~/.codex/config.toml
+cp templates/cn/AGENTS.template.md ~/.codex/AGENTS.md
+cp templates/cn/config.template.toml ~/.codex/config.toml
 ```
 
 **已有配置（手动合并）**：查看注释后，对比差异后合并关键配置。
 
-> ⚠️ **重点**：`config.toml.example` 中的 `developer_instructions` 是系统级契约，优先级高于 `AGENTS.md`，务必确保已合并。
+> ⚠️ **重点**：`config.template.toml` 中的 `developer_instructions` 是系统级契约，优先级高于 `AGENTS.md`，务必确保已合并。
 
-> 说明：本文档按 Codex CLI `v0.114.0` 适配；不同版本或供应商字段名可能有差异，请以你本地 CLI 支持为准。
+> 说明：本文档按 Codex CLI `v0.115.0` 适配；不同版本或供应商字段名可能有差异，请以你本地 CLI 支持为准。
 
 ## 文档导航
 
 - `README.md`：快速上手（本页）
-- `docs/faq.md`：常见坑与排查
-- `templates/AGENTS.template.md`：开发原则与输出风格模板
-- `templates/config.toml.example`：系统配置模板（含 `developer_instructions`）
-
-## 适用范围提醒
-
-- 个人项目：可激进，迭代快
-- 团队/公司项目：以团队规范、发布流程、兼容策略为准
-
-特别是“修改功能不保留旧兼容代码”这条：
-
-- 对可控项目是提效利器
-- 对企业项目必须评估影响并走评审流程
+- `templates/cn/AGENTS.template.md`：开发原则与输出风格模板
+- `templates/cn/config.template.toml`：系统配置模板（含 `developer_instructions`）
+- `templates/cn/agents/`：子代理配置模板
+- `templates/cn/skills/`：技能模板
 
 ## 免责声明
 
-本仓库是方法论与模板参考，当前按 Codex CLI v0.114.0 验证。
+本仓库是方法论与模板参考，当前按 Codex CLI v0.115.0 验证。
+请注意，多智能体并发可能导致Token 消耗上升20%~30%，请根据自身情况合理使用。
 
 ⚠️ **风险提示**：LLM 可能产生错误判断，导致合理数据被误删或代码被错误修改。请合理分配权限，建议在可控环境中先行测试，使用本模板所产生的任何后果需自行承担。
