@@ -1,5 +1,190 @@
 # 发布日志
 
+## v1.4.0 - 2026-03-18
+
+### 🎯 版本主题
+- **模板资产重组** - 按语言分离为 `templates/cn` 与 `templates/en` 目录结构
+- **输出风格 Skill 化** - 将终端对话风格提取为独立可复用的 Skill
+- **全局指令精简** - AGENTS 模板收敛为核心约束，降低上下文占用
+- **子代理自定义描述** - 新增 `explorer` 与 `worker` 子代理配置模板，最大化节省上下文
+
+---
+
+### ✨ 核心更新
+
+#### 1️⃣ 模板目录结构重构（重要变更）
+
+**变更原因**：按语言分离模板资产，便于维护与复制，同时为中英文版本提供独立的 agents 和 skills 扩展能力。
+
+**新目录结构**：
+```
+templates/
+├── cn/                              # 中文模板集
+│   ├── AGENTS.template.md           # 全局共享规范（精简版）
+│   ├── config.template.toml         # 配置模板
+│   ├── agents/                      # 子代理配置
+│   │   ├── explorer.toml            # 只读探索型子代理
+│   │   └── worker.toml              # 局部实现型子代理
+│   └── skills/                      # Skills 集合
+│       └── terminal-dialog-style/   # 终端对话风格
+│           └── SKILL.md
+└── en/                              # 英文模板集（同结构）
+    ├── AGENTS.template.en.md
+    ├── config.toml.en.example
+    ├── agents/
+    │   ├── explorer.toml
+    │   └── worker.toml
+    └── skills/
+        └── terminal-dialog-style/
+            └── SKILL.md
+```
+
+**迁移路径**：
+- `templates/AGENTS.template.md` → `templates/cn/AGENTS.template.md`
+- `templates/config.toml.example` → `templates/cn/config.template.toml`
+- `templates/AGENTS.template.en.md` → `templates/en/AGENTS.template.en.md`
+- `templates/config.toml.en.example` → `templates/en/config.toml.en.example`
+
+#### 2️⃣ 输出风格 Skill 化
+
+**变更内容**：将 AGENTS 模板中的「对话输出风格指南」章节（约 100 行）提取为独立 Skill。
+
+**优势**：
+- **按需加载** - 仅在需要时激活，节省主对话上下文
+- **可复用** - 可跨项目、跨语言复用
+- **独立演进** - 风格规范可独立更新，不影响核心契约
+
+**使用方式**：复制到 `~/.codex/skills/terminal-dialog-style/SKILL.md`
+
+#### 3️⃣ 全局指令精简
+
+**变更前**：AGENTS 模板包含完整的输出风格、并发规范、子代理契约等，约 200+ 行。
+
+**变更后**：收敛为核心约束，约 100 行：
+- 全局共享规范（沟通输出、项目规范、完成口径）
+- 开发原则（语言规范、基本原则、质量标准）
+- 危险操作确认机制
+- 输出结尾建议
+
+**效果**：降低主对话上下文占用，复杂契约按需通过 Skill 或子代理配置加载。
+
+#### 4️⃣ 子代理自定义描述
+
+**新增文件**：
+- `templates/cn/agents/explorer.toml` - 只读探索型子代理
+- `templates/cn/agents/worker.toml` - 局部实现型子代理
+
+**核心设计**：通过 `developer_instructions` 覆盖子代理描述，精准限定职责边界：
+
+| 子代理 | 职责定位 | 禁止事项 |
+|--------|----------|----------|
+| explorer | 只读探索、证据收集、调用链追踪 | 修改文件、生成补丁、调度其他代理 |
+| worker | 局部实现、授权范围内修改 | 擅自扩大范围、调度其他代理 |
+
+**上下文节省**：子代理描述精简至 10-15 行，避免加载完整的 AGENTS 模板。
+
+#### 5️⃣ README 文档完善
+
+- **目录结构说明** - 更新为 `templates/cn` 和 `templates/en` 分离布局
+- **配置合并步骤** - 补充完整的配置自检命令与预期结果
+- **备份与回滚指南** - 新增 `~/.codex/agents` 与 `~/.codex/skills` 目录级备份操作
+- **WebSocket Fallback 说明** - 统一中英文文档，明确后端不支持时自动回退到传统模式
+- **契约描述更新** - 将「标准契约」改为「动态契约」，强调主代理动态下发指令
+
+#### 6️⃣ 中英文文档同步
+
+- 以中文 README 为基准重写 README.en.md
+- 同步英文文档至当前 Codex CLI v0.115.0 口径
+- 移除已删除的 `docs/faq.md` 引用
+
+---
+
+### 📊 统计数据
+
+**本次发布包含 9 个提交：**
+- `ff7ff1b` - feat: 拆分多语言 Codex 模板资产
+- `d5bff34` - feat: align English templates with the CN source set
+- `7433c45` - docs: 更新 README.md 以反映新的目录结构
+- `6b3e936` - docs: 完善 README 的模板复制说明
+- `b6c47fa` - docs: 格式调整
+- `413da1e` - docs: 补充 codex 配置目录备份与回滚说明
+- `2b82712` - docs: 完善配置合并自检步骤并更新契约描述
+- `8cf8e67` - docs: 重构英文文档以对齐中文版本
+- `dcf57d6` - docs: 同步中英文 README 并统一 websocket fallback 说明
+
+**文件变更：**
+- 新增 8 个文件（cn/en 目录下的模板、agents、skills）
+- 删除 4 个文件（根级中英文模板）
+- 修改 2 个 README 文件
+- 净增约 218 行（+960 / -742）
+
+---
+
+### 📋 升级指南
+
+#### 从 v1.3.0 升级
+
+1. **拉取最新代码**
+   ```bash
+   git pull origin main
+   ```
+
+2. **更新配置（关键步骤）**
+
+   **首次使用（直接复制）**：
+   ```bash
+   # 创建必要目录
+   mkdir -p ~/.codex/agents ~/.codex/skills
+
+   # 复制中文模板
+   cp templates/cn/AGENTS.template.md ~/.codex/AGENTS.md
+   cp templates/cn/config.template.toml ~/.codex/config.toml
+   cp -r templates/cn/agents/* ~/.codex/agents/
+   cp -r templates/cn/skills/* ~/.codex/skills/
+   ```
+
+   **已有配置（手动合并）**：
+   ```bash
+   # 备份现有配置
+   cp ~/.codex/config.toml ~/.codex/config.toml.bak
+   cp ~/.codex/AGENTS.md ~/.codex/AGENTS.md.bak
+
+   # 对比差异后合并关键配置项
+   diff templates/cn/config.template.toml ~/.codex/config.toml
+   ```
+
+3. **验证配置**
+   ```bash
+   # 检查关键配置块
+   grep -E "^\[|^model|^developer_instructions" ~/.codex/config.toml | head -20
+
+   # 确认关联文件存在
+   ls -la ~/.codex/AGENTS.md ~/.codex/config.toml
+   ls -la ~/.codex/agents/
+   ls -la ~/.codex/skills/
+   ```
+
+4. **验证版本**
+   - 确保 Codex CLI 版本为 `v0.115.0`
+   - 执行 `codex --version` 检查
+
+---
+
+### ⚠️ 注意事项
+
+1. **路径变更** - 模板路径从根级迁移至 `templates/cn/` 和 `templates/en/`
+2. **文件重命名** - `config.toml.example` → `config.template.toml`（命名更规范）
+3. **Skill 独立** - 输出风格已独立为 Skill，需复制到 `~/.codex/skills/` 目录
+4. **子代理可选** - `agents/` 目录下的子代理配置为可选增强，按需启用
+
+---
+
+> 📅 **发布日期**: 2026-03-18
+> 📌 **版本**: v1.4.0
+> 🎯 **主题**: 模板重组与上下文优化
+
+---
+
 ## v1.3.0 - 2026-03-16
 
 ### 🎯 版本主题
