@@ -18,7 +18,7 @@
 - 🧠 **原生记忆**：`memories = true` 自动提取和归并对话记忆，提升上下文连贯性
 - 🔌 **WebSocket 支持**：`responses_websockets_v2 = true` 启用实时流式响应，不支持自动回退
 - 🎯 **对话风格**：强视觉边界、emoji 编号、直而短句的终端输出规范
-- 📝 **标准契约**：子代理任务下发的清晰指令模板（名称/目标/动作/结果）
+- 📝 **动态契约**：主代理任务动态下发清晰的指令模板（目标/动作/结果）
 - ⚙️ **并发控制**：`max_threads = n` 自定义单轮最大子任务数
 - ⚠️ **风险管控**：危险操作确认机制与不可变原则
 - 🤖 **自定义智能体**：手动配置子代理的模型、推理强度、职责描述
@@ -139,9 +139,23 @@ cp templates/cn/skills/terminal-dialog-style/SKILL.md ~/.codex/skills/terminal-d
 5. **合并完成后，做一次快速自检**
 
 ```bash
-rg -n "developer_instructions|\\[agents\\.explorer\\]|\\[agents\\.worker\\]|config_file" ~/.codex/config.toml
-ls -R ~/.codex/agents ~/.codex/skills 2>/dev/null
+# 检查 config.toml 关键块和 config_file 声明
+rg -n "developer_instructions|\\[agents\\.explorer\\]|\\[agents\\.worker\\]|\\[features\\]|\\[agents\\]|\\[memories\\]|config_file" ~/.codex/config.toml
+
+# 检查关联文件是否存在
+test -f ~/.codex/agents/explorer.toml && echo "OK: agents/explorer.toml"
+test -f ~/.codex/agents/worker.toml && echo "OK: agents/worker.toml"
+test -f ~/.codex/skills/terminal-dialog-style/SKILL.md && echo "OK: skills/terminal-dialog-style/SKILL.md"
+
+# 可选：查看目录结构
+ls -R ~/.codex/agents ~/.codex/skills
 ```
+
+预期结果：
+
+- 第一个命令应至少匹配出这些块或字段：`developer_instructions`、`[agents.explorer]`、`[agents.worker]`、`[features]`、`[agents]`、`[memories]`、`config_file`
+- 后三个 `test -f` 命令都应输出对应的 `OK: ...`
+- 如果 `ls -R` 报 `No such file or directory`，说明关联目录没有准备完整，需要回到上一步补齐
 
 6. **如果需要回滚，按下面恢复**
 
