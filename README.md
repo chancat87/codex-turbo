@@ -2,7 +2,7 @@
 
 [English](./README.en.md) | 简体中文
 
-分享基于 Codex 原生功能的配置模板，克制功能扩展，追求更快、更稳、更可复用。
+本仓库是 Codex CLI 的个人配置模板集，旨在充分利用 CLI 原生能力，实现多智能体自主协调下的并行任务调度。
 
 > 当前项目适配版本：**Codex CLI v0.114.0**
 
@@ -61,20 +61,30 @@ cd codex-turbo
 
 ### 2. 复制模板配置
 
-本仓库提供两个核心模板文件：
+本仓库提供以下模板文件：
 
 | 文件 | 用途 | 目标位置 |
 |------|------|----------|
 | `templates/cn/config.template.toml` | 核心的系统配置（含 `developer_instructions` 并行工作规范） | `~/.codex/config.toml` |
 | `templates/cn/AGENTS.template.md` | 开发原则与输出风格指南 | `~/.codex/AGENTS.md` |
+| `templates/cn/agents/` | 子代理配置（explorer、worker） | `~/.codex/agents/` |
+| `templates/cn/skills/` | 技能模板（terminal-dialog-style 等） | `~/.codex/skills/` |
 
 > config.toml 请根据服务商的要求自行完善 key 等供应商信息。
 
 **首次使用（直接复制）**：
 
 ```bash
+# 创建目标目录（如不存在）
+mkdir -p ~/.codex
+
+# 复制核心配置文件
 cp templates/cn/AGENTS.template.md ~/.codex/AGENTS.md
 cp templates/cn/config.template.toml ~/.codex/config.toml
+
+# 复制子代理和技能目录
+cp -r templates/cn/agents ~/.codex/
+cp -r templates/cn/skills ~/.codex/
 ```
 
 **已有配置（手动合并）**：查看注释后，对比差异后合并关键配置。
