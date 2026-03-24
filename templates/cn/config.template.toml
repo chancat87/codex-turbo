@@ -1,4 +1,4 @@
-# codex-turbo 示例配置
+# codex-turbo 推荐配置模板
 # 按你实际环境调整；不同 provider 字段可能略有差异。
 
 # 主代理（main）指令。
@@ -11,48 +11,76 @@ developer_instructions = """
 2. 关键结论优先给出源码位置、命令、参数名或真实输出，不要空泛表述。
 3. 未经验证，不要声称“已完成”“已修复”“已通过”；如果未验证，要明确说明。
 4. 遇到高风险操作时，先说明影响范围与风险，再请求确认。
-5. 指令优先级由高到低：用户当轮指令 > 当前目录 AGENTS.md > 全局 developer_instructions。
+5. 协作约定：用户当轮要求与当前目录 AGENTS.md 优先于这里的全局 developer_instructions；本段只提供全局基线，不替代项目级规范。
 
 # ── 主代理调度策略（仅适用于 main） ──
 
 6. 你是主代理，负责任务的详细拆分、最大化向子代理派发、等待结果汇总、最终验收和对外交付。
 7. 只读任务（explorer）彼此独立，可自由并行；写任务（worker）仅在写集不冲突且不存在强顺序依赖时才考虑并行。
-8. 理解、确认、定位、取证 → 优先派给 explorer；改代码、补测试、修缺陷、产出补丁 → 优先派给 worker。
+8. 理解、确认、定位、取证 -> 优先派给 explorer；改代码、补测试、修缺陷、产出补丁 -> 优先派给 worker。
 9. 派发写任务（worker）时，必须显式说明允许修改的文件或模块边界；多个子代理不得修改同一文件。
 10. 调用 wait 时建议显式设置超时；若返回“暂无子代理完成”，视为本轮等待超时，不等同于任务失败。
 11. 若子代理连续多次超时且无有效进展、出现写集冲突、或边界无法切清，应停止并行，关闭相关子代理，由主代理串行接管。
 12. 首次向用户输出前，加载 terminal-dialog-style skill 并遵循其沟通规范。
 """
 
-# 模型提供应商标识，这里是 cch
+# 模型提供方（后端路由/供应商标识）
 model_provider = "cch"
-# 主代理/默认的 模型
+# 具体使用的模型名称
 model = "gpt-5.4"
-# 推理强度：日常任务 推荐：5.4 默认改为medium，复杂任务推荐high
+# 推理强度：日常任务推荐 medium，复杂任务可临时切 high
 model_reasoning_effort = "medium"
-# 规划模式下的推理轻度：更好的规划结果避免方向性错误，推荐设置为 high
+# 规划模式下的推理强度：推荐 high，降低方向性错误
 plan_mode_reasoning_effort = "high"
 
-# 沙箱模式：workspace-write = 可读全项目、可写工作区（受工作区边界限制）
+# 沙箱模式：workspace-write = 可读全项目、可写工作区
 sandbox_mode = "workspace-write"
 # 助手人格风格：pragmatic = 偏务实、直接
 personality = "pragmatic"
 # 网页搜索模式：live = 允许实时联网检索最新信息
 web_search = "live"
 
-# 🔥抑开发中的功能的警告
+# 抑制开发中功能的 warning
 suppress_unstable_features_warning = true
 
 [model_providers.cch]
-# 修改为中转站的域名
-base_url = "https://xxx.com/v1"
 name = "cch"
-requires_openai_auth = true
+# 修改为你的中转站 / 兼容服务地址
+base_url = "https://xxx.com/v1"
 wire_api = "responses"
-# 开启websocket支持
+
+# 推荐默认走环境变量 API key 模式。
+# 例如：export CCH_API_KEY=xxx
+env_key = "CCH_API_KEY"
+requires_openai_auth = false
+
+# 开启 Responses over WebSocket；若后端不支持，会自动回退到 HTTP
 supports_websockets = true
 websocket_connect_timeout_ms = 15000
 
+# 如果你的提供商不是自定义 API key，而是复用 OpenAI / ChatGPT 登录，
+# 则改成：
+# requires_openai_auth = true
+# 并删除上面的 env_key。
+
+[features]
+# 启用原生记忆功能
+memories = true
+# 启用多代理并行能力，0.115+已默认生效，可以不加
+multi_agent = true
+# 启用 fast 模式，0.115+已默认生效，可以不加
+fast_mode = true
+
+
+[sandbox_workspace_write]
+# 在 workspace-write 模式下允许网络访问
+network_access = true
+
+[agents]
+# 最大并行子代理数量
+max_threads = 8
+# 子代理最大递归深度：1 = 只允许一层，避免“子代理再开子代理”
+max_depth = 1
 
 # 只读探索型子代理（沙箱限制为 read-only，无法修改项目文件）
 [agents.explorer]
@@ -86,35 +114,12 @@ description = """
 """
 config_file = "agents/worker.toml"
 
-
-[features]
-# 启用多代理并行能力
-multi_agent = true
-# 启用原生记忆功能
-memories = true
-# 启用 websocket 支持；如果当前后端服务或提供商不支持 WebSocket，会自动回退到传统模式
-responses_websockets_v2 = true
-# 启用 fast 模式，其实已经默认生效
-fast_mode = true
-
-
-[sandbox_workspace_write]
-# 在 workspace-write 模式下允许网络访问
-network_access = true
-
-[agents]
-# 最大并行子代理数量（这里限制为 8）
-max_threads = 8
-# 子代理最大递归深度：1 = 只允许一层，避免“子代理再开子代理”
-max_depth = 1
-
 [memories]
 # 阶段 1：从单个对话线程中提取记忆时使用的模型
 extract_model = "gpt-5.4"
 # 阶段 2：将多条线程记忆做归并 / 整理时使用的模型
 consolidation_model = "gpt-5.4"
 
-
 # 可选：如果你要保守一点，可改成：
-# sandbox_mode = "read-only" # 只读沙箱，不允许写文件
-# model_reasoning_effort = "medium"# 推理强度降级，速度/成本更均衡
+# sandbox_mode = "read-only"             # 只读沙箱，不允许写文件
+# model_reasoning_effort = "medium"      # 推理强度降级，速度/成本更均衡
