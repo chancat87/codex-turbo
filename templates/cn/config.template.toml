@@ -33,7 +33,7 @@ developer_instructions = """
 14. 子代理完成任务或提交交接报告后，主代理必须及时关闭该子代理以释放线程配额；不要让已完成任务的子代理持续占用资源。
 
 #  输出格式的 skill
-15. 首次向用户输出前，加载 terminal-dialog-style skill 并遵循其沟通规范。
+15. 首次向用户输出前，加载 `terminal-dialog-style` skill 并遵循其沟通规范。
 """
 
 # 模型提供方（后端路由/供应商标识）
