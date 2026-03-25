@@ -1,5 +1,6 @@
-model = "gpt-5.4"
-model_reasoning_effort = "medium"
+model = "gpt-5.4-mini"
+model_reasoning_effort = "high"
+
 
 # Overrides for the implementation sub-agent role to make the agent selection clearer
 developer_instructions = """
