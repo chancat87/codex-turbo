@@ -67,11 +67,15 @@ description: Use when chatting in terminal, especially in terminal-first technic
 
 **允许的格式（三种且仅有三种）**：
 
-| 格式 | 用途 | 示例 |
-|------|------|------|
-| `FileName.ext:L行号` | 一般引用 | `TrainCourseManager.kt:L335` |
-| `FileName.ext:L起-止` | 行范围引用 | `TrainCourseManager.kt:L335-356` |
-| `File#method():L行号` | 方法级定位 | `TrainCourseManager#calcCurProgress():L362` |
+```
+  +----------------------+------------+----------------------------------------------+
+  | 格式                 | 用途       | 示例                                         |
+  +----------------------+------------+----------------------------------------------+
+  | FileName.ext:L行号   | 一般引用   | TrainCourseManager.kt:L335                   |
+  | FileName.ext:L起-止  | 行范围引用 | TrainCourseManager.kt:L335-356               |
+  | File#method():L行号  | 方法级定位 | TrainCourseManager#calcCurProgress():L362    |
+  +----------------------+------------+----------------------------------------------+
+```
 
 **禁止的格式（务必避免）**：
 
@@ -83,12 +87,16 @@ description: Use when chatting in terminal, especially in terminal-first technic
 
 **正反面完整对比**：
 
-| ❌ 违规 | ✅ 正确 |
-|--------|--------|
-| `src/main/java/.../ApiOperationScanner.java:80` | `ApiOperationScanner.java:L80` |
-| `com.domain.module.bus.auth.scanner.ApiOperationScanner` | `ApiOperationScanner` |
-| `- src/main/java/.../UserService.java:42-60` | `UserService.java:L42-60` |
-| 列表：`- src/.../TrainCourseManager.kt:335-356` | 列表：`- TrainCourseManager.kt:L335-356` |
+```
+  +---------------------------------------------------+------------------------------------+
+  | ❌ 违规                                           | ✅ 正确                            |
+  +---------------------------------------------------+------------------------------------+
+  | src/main/java/.../ApiOperationScanner.java:80      | ApiOperationScanner.java:L80       |
+  | com.domain.module.bus.auth.scanner.ApiOperation... | ApiOperationScanner                |
+  | - src/main/java/.../UserService.java:42-60         | UserService.java:L42-60            |
+  | 列表：- src/.../TrainCourseManager.kt:335-356      | TrainCourseManager.kt:L335-356     |
+  +---------------------------------------------------+------------------------------------+
+```
 
 **当需要在对话中定位源码时，推荐使用以下模板**：
 
@@ -129,6 +137,11 @@ description: Use when chatting in terminal, especially in terminal-first technic
 > ⚠️ **优先级说明**：本 Skill 有意将 ASCII 表格置于列表之前。
 > 终端环境中，等宽字体天然适合对齐表格，多维度对比信息在表格中的可读性远高于列表。
 > 这一优先级与通用 Markdown 文档规范不同，是针对终端场景的刻意设计。
+
+> 🚫 **硬性禁止：Markdown 表格语法**
+> 终端环境（如 Codex CLI）**无法渲染** Markdown 表格（`| xxx | yyy |` 语法）。
+> 未渲染的 Markdown 表格在终端中对齐混乱、可读性极差。
+> **在终端对话中，一律使用 `+---+` 框线的纯文本 ASCII 表格**，禁止使用 `|---|---|` 的 Markdown 表格语法。
 
 **呈现优先级**：
 
@@ -181,11 +194,10 @@ description: Use when chatting in terminal, especially in terminal-first technic
 
 ## ❌ Common Mistakes
 
-| 反模式 | 说明 |
-|--------|------|
-| 🚫 对话中使用 `##` 标题语法 | 终端对话应使用粗体分组，`##` 标题视觉层级过重，破坏对话流的扁平感 |
-| 🚫 终端中使用超宽表格 | 内容冗长、含代码或需连贯叙述时，表格会导致灾难性换行 |
-| 🚫 路径包含目录前缀 | **硬性违规**。无论行内还是列表项，必须只用文件名（参见「📍 路径引用规范」）|
-| 🚫 大段纯文本堆砌 | 缺乏视觉锚点，读者无法快速定位信息 |
-| 🚫 装饰性 ASCII 图示 | 图示应服务于理解，不应仅为美观而添加 |
-| 🚫 遗漏 TL;DR | 长内容开头不加 `>` 引用块摘要，读者需全文阅读才能抓住重点 |
+- 🚫 **对话中使用 `##` 标题语法** —— 终端对话应使用粗体分组，`##` 标题视觉层级过重，破坏对话流的扁平感
+- 🚫 **终端中使用 Markdown 表格** —— **硬性违规**。`| xxx | yyy |` 语法在终端中无法渲染，显示为散乱的管道符文本。必须使用 `+---+` 框线的 ASCII 表格
+- 🚫 **终端中使用超宽表格** —— 内容冗长、含代码或需连贯叙述时，表格会导致灾难性换行
+- 🚫 **路径包含目录前缀** —— **硬性违规**。无论行内还是列表项，必须只用文件名（参见「📍 路径引用规范」）
+- 🚫 **大段纯文本堆砌** —— 缺乏视觉锚点，读者无法快速定位信息
+- 🚫 **装饰性 ASCII 图示** —— 图示应服务于理解，不应仅为美观而添加
+- 🚫 **遗漏 TL;DR** —— 长内容开头不加 `>` 引用块摘要，读者需全文阅读才能抓住重点

@@ -65,15 +65,20 @@ The goal is to help both technical and business readers understand and act quick
 
 Terminal width is limited. **Never** use fully-qualified paths or long package-name paths in conversations.
 
-| ❌ Wrong | ✅ Correct |
-|------------|-----------|
-| `src/main/java/.../ApiOperationScanner.java:80` | `ApiOperationScanner.java:80` |
-| `com.domain.module.bus.auth.scanner.ApiOperationScanner` | `ApiOperationScanner` |
-| `src/main/java/.../UserService.java` line 42 | `UserService#findById():42` |
+```
+  +---------------------------------------------------+------------------------------------+
+  | ❌ Wrong                                          | ✅ Correct                         |
+  +---------------------------------------------------+------------------------------------+
+  | src/main/java/.../ApiOperationScanner.java:80      | ApiOperationScanner.java:L80       |
+  | com.domain.module.bus.auth.scanner.ApiOperation... | ApiOperationScanner                |
+  | - src/main/java/.../UserService.java:42-60         | UserService.java:L42-60            |
+  | List: - src/.../TrainCourseManager.kt:335-356      | TrainCourseManager.kt:L335-356     |
+  +---------------------------------------------------+------------------------------------+
+```
 
 **Rules**:
-- 🔹 General reference — use filename only: `ApiOperationScanner.java:80`
-- 🔹 When locating a method — use `file#method():line` format: `UserService#findById():42`
+- 🔹 General reference — use filename only: `ApiOperationScanner.java:L80`
+- 🔹 When locating a method — use `file#method():line` format: `UserService#findById():L42`
 - 🔹 Class name reference — use short class name: `UserCore` not `com.xxx.module.UserCore`
 
 
@@ -92,6 +97,11 @@ Focus on **visual organization of information** for comparisons, flows, hierarch
 > ⚠️ **Priority note**: This Skill intentionally places ASCII tables ahead of lists.
 > In terminal environments, monospace fonts naturally suit table alignment, and multi-dimensional comparisons are far more readable in tables than lists.
 > This priority differs from general Markdown conventions and is a deliberate design for terminal scenarios.
+
+> 🚫 **HARD PROHIBITION: Markdown Table Syntax**
+> Terminal environments (like Codex CLI) **cannot render** Markdown tables (`| xxx | yyy |` syntax).
+> Unrendered Markdown tables appear messy and are extremely hard to read in the terminal.
+> **In terminal conversations, always use plain-text ASCII tables with box-drawing characters (`+---+`), and never use `|---|---|` Markdown table syntax.**
 
 **Presentation priority**:
 
@@ -144,11 +154,10 @@ Example:
 
 ## ❌ Common Mistakes
 
-| Anti-pattern | Explanation |
-|-------------|-------------|
-| 🚫 Using `##` headings in conversation | Terminal conversations should use bold grouping; `##` headings are too visually heavy and break the flat feel |
-| 🚫 Overly wide tables in terminal | Long content, code, or narrative in tables causes catastrophic line wrapping |
-| 🚫 Overusing long absolute paths | Terminal width is limited; prefer short filenames or `file#method():line` format |
-| 🚫 Dense text blocks without anchors | Lack of visual anchors makes it impossible for readers to locate information quickly |
-| 🚫 Decorative ASCII diagrams | Diagrams should serve understanding, not aesthetics |
-| 🚫 Missing TL;DR | Long content without a `>` quote block summary forces the reader to scan everything |
+- 🚫 **Using `##` headings in conversation** — Terminal conversations should use bold grouping; `##` headings are too visually heavy and break the flat feel
+- 🚫 **Using Markdown tables in terminal** — **Hard Violation**. `| xxx | yyy |` syntax cannot be rendered in terminal and shows up as scattered pipe characters. Use ASCII tables with `+---+` instead.
+- 🚫 **Overly wide tables in terminal** — Long content, code, or narrative in tables causes catastrophic line wrapping
+- 🚫 **Paths containing directory prefixes** — **Hard Violation**. Whether inline or in lists, you must only use the filename (see "📍 Path Reference Convention")
+- 🚫 **Dense text blocks without anchors** — Lack of visual anchors makes it impossible for readers to locate information quickly
+- 🚫 **Decorative ASCII diagrams** — Diagrams should serve understanding, not aesthetics
+- 🚫 **Missing TL;DR** — Long content without a `>` quote block summary forces the reader to scan everything

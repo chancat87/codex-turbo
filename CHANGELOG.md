@@ -1,5 +1,29 @@
 # 发布日志
 
+## v1.5.1 - 2026-03-27
+
+### 🎯 版本主题
+- **终端表格与规范强化** - 全面禁止 Markdown 表格语法，强化 ASCII 表格作为终端唯一合法表格形式
+
+---
+
+### ✨ 核心更新
+
+#### 1️⃣ 终端对话中硬性禁止 Markdown 表格
+
+**变更原因**：由于终端环境（如 Codex CLI）无法渲染 Markdown 表格语法（`| xxx |`），导致显示效果极其散乱且难以阅读。本次更新将「禁止 Markdown 表格」提升为硬性契约规范。
+
+**主要调整**：
+- **规范升级**：在 `terminal-dialog-style` Skill 中明确定义了 Markdown 表格的硬性禁止规则
+- **示例重构**：将所有中英文示例中的正反例表格、路径规范表格等全部重构为 `+---+` 框线的 ASCII 表格
+- **排版对齐**：统一了路径引用示例的表格样式，确保在等宽字体终端下的完美对齐
+
+**涉及文件**：
+- `templates/cn/skills/terminal-dialog-style/SKILL.md`
+- `templates/en/skills/terminal-dialog-style/SKILL.md`
+
+---
+
 ## v1.5.0 - 2026-03-25
 
 ### 🎯 版本主题
