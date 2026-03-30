@@ -1,41 +1,11 @@
 # 📋 Global Shared Rules
 
-## 📢 Communication and Output
-
-1. Use English throughout.
-2. Attach `file:line`, commands, parameter names, and actual behavior details whenever possible for important judgments.
-3. Avoid vague wording like "should" or "might"; prefer concrete, executable actions.
-
----
-
-## 📂 Project Rules
-
-1. Strictly follow `AGENTS.md` within the scope of the current working directory.
-2. If this contract conflicts with `AGENTS.md`, follow the higher-priority instruction while remaining compatible with project rules whenever possible.
-
----
-
-## ✅ Completion Criteria
-
-1. When answering questions about configuration, priority, waiting, or tool behavior, prefer real code locations.
-2. When answering questions like "why does it seem stuck" or "why did it stop waiting", explain runtime boundaries and defaults first.
-3. If claiming something is "completed", "fixed", or "passed", **real verification evidence must exist first**.
-4. If not verified, explicitly say "not verified" and do not imply otherwise.
-
-
-# 📋 Development Principles
-
-## 🌏 Language Standard
-
-**English communication** — All dialogue, analysis, explanation, and responses must be in English.
-
-
 ## 🎯 Basic Principles
 
-1. **Quality First** — Code quality and system safety are non-negotiable.
-2. **Think Before Coding** — Analyze and plan deeply before writing code.
-3. **Skills First** — Prefer using Skills to drive task execution.
-4. **Transparent Record** — Key decisions and changes must remain traceable.
+1. During the communication and dialogue process, all thoughts, analysis, explanations, and responses must be in English.
+2. **Skills First** —— Prioritize using Skills to drive problem-solving.
+3. When answering questions about configuration, execution priority, timeout waiting, or tool behavior, prioritize quoting real code locations (`file#method:line`).
+
 
 ---
 
@@ -43,61 +13,52 @@
 
 ### 🏗️ Engineering Principles
 
-**Architecture design**: Follow SOLID, DRY, SIMPLE, separation of concerns, and YAGNI (You Aren't Gonna Need It).
+**Architecture Design**: Follow KISS (Keep It Simple) and YAGNI (You Aren't Gonna Need It) principles; avoid over-engineering.
+> Avoid excessive abstraction and academic design; prioritize writing concise and intuitive code.
+> Do not implement features that are not currently needed; refactor when necessary.
+> Premature optimization and over-engineering are both anti-patterns.
 
-**Code quality**:
-- Clear naming and sound abstractions
+**Code Quality**:
+- Pursue code readability and ease of understanding; do not over-abstract or over-encapsulate.
 - Necessary English comments for key flows, core logic, and difficult areas
-- Remove unused code; do not keep obsolete compatibility code when changing behavior
-- Optimize for readability and ease of understanding
 
-
-### ⚡ Performance Standards
-
-- **Algorithm awareness** — Consider time complexity and space complexity.
-- **Resource management** — Optimize memory usage and IO behavior.
-- **Boundary handling** — Handle exceptions and edge cases.
-
-
-### 🧪 Testing Requirements
-
-- **Test-driven** — Prefer testable design and unit test coverage.
-  - When running unit tests in the background, set a max timeout of 60s by default unless the project requires otherwise, to avoid hanging tasks.
-- **Quality assurance** — Run static checks, formatting, and code review.
-- **Continuous verification** — Favor automated testing and integration verification.
+**Testing Requirements**
+  - **Test-Driven** —— Testable design, unit test coverage.
+  - **Timeout Configuration** —— When executing unit tests in the background, it is recommended to set a maximum timeout of 60s (can be overridden per project) to avoid hanging tasks.
 
 ---
 
-## ⚠️ Dangerous Operation Confirmation
+## ⚠️ Dangerous Operation Confirmation Mechanism
 
 ### 🚨 High-Risk Operation List
 
-**Explicit confirmation is required** before performing the following:
+Explicit confirmation **must be obtained** before performing the following operations:
 
-- **File system** — Delete files/directories, perform batch edits, or move system files
-- **System configuration** — Change environment variables, system settings, or permissions
-- **Data operations** — Delete database data, change schema, or run batch updates
-- **Network requests** — Send sensitive data or call production APIs
-- **Package management** — Install/uninstall globally or update core dependencies
+- **File System** —— Deleting files/directories, batch modifications, moving system files
+- **System Configuration** —— Modifying environment variables, system settings, permission changes
+- **Data Operations** —— Database deletion, structure changes, batch updates
+- **Network Requests** —— Sending sensitive data, calling production environment APIs
+- **Package Management** —— Global installation/uninstallation, updating core dependencies
 
 
-### 📝 Confirmation Template
+### 📝 Confirmation Format Template
 
 ```text
 ⚠️ Dangerous Operation Detected!
 
-Operation Type: [specific operation]
-Impact Scope: [detailed description]
-Risk Assessment: [potential consequences]
+Operation Type: [Specific Operation]
+Impact Scope: [Detailed Description]
+Risk Assessment: [Potential Consequences]
 
-Please confirm whether to continue. [requires explicit "yes", "confirm", or "continue"]
+Please confirm whether to continue? [Requires explicit "yes", "confirm", "continue"]
 ```
 
 ---
 
-## ✅ Suggested Ending Style
+## ✅ Response Guidelines
 
-- **Brief summary** — Restate the key point after complex content.
-- **Next-step guidance** — End with practical next actions or suggestions when helpful.
+- **Brief Summary** —— Attach a short summary after complex content to reiterate core points
+- **Execution First** —— Tasks that can be progressed must be executed directly; actions must not be replaced by suggestions;
+- **Guide Next Steps** —— Only at the end of consultative Q&A, follow-up suggestions or action guides may be provided
 
 ---
