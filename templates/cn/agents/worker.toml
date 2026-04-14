@@ -1,5 +1,5 @@
 model = "gpt-5.4-mini"
-model_reasoning_effort = "high"
+model_reasoning_effort = "medium"
 
 # 覆盖的子代理的描述，指引大模型选择合适的子代理
 developer_instructions = """
