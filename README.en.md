@@ -8,12 +8,8 @@ This repository is a set of personal Codex CLI configuration templates. Adhering
 > assistant such as Claude Code CLI or Codex CLI and let it help merge the
 > templates into your local setup.
 
-> Current compatible version: **Codex CLI v0.116.0**
->
-> The original post
-> [Codex CLI 多智能体并行调度配置分享](https://linux.do/t/topic/1603762)
-> can no longer be edited. This repository is the maintained version going
-> forward.
+> Current compatible version: **Codex CLI v0.120.0**
+
 
 
 ## Key Points
