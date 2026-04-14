@@ -42,6 +42,14 @@ This repository is a set of personal Codex CLI configuration templates. Adhering
 - 📋 **Reusable Templates**: ready-to-copy `AGENTS.template.en.md` and
   `config.toml.en.example`
 
+## Display Effects
+
+After applying the `terminal-dialog-style` skill, the console output structure becomes much clearer, supporting hierarchical execution feedback and well-organized layouts:
+
+![Terminal Output Effect 1](./pics/e1.png)
+
+![Terminal Output Effect 2](./pics/e2.png)
+
 ## Core Files and Directories
 
 ```text
