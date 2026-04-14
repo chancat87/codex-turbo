@@ -118,7 +118,7 @@ cp -r templates/en/skills ~/.codex/
 
 **Existing configuration (manual merge)**: → See [Migration Guide](./docs/manual-merge.en.md)
 
-> Note: this document is adapted for Codex CLI `v0.116.0`. Field names may
+> Note: this document is adapted for Codex CLI `v0.120.0`. Field names may
 > differ across versions or providers, so always confirm against your local CLI.
 
 
@@ -161,7 +161,7 @@ team's own conventions.
 ## Disclaimer
 
 This repository provides configuration methodology and template references,
-verified against Codex CLI `v0.116.0`.
+verified against Codex CLI `v0.120.0`.
 
 **Cost note**: multi-agent mode may increase token usage by around 20% to 30%.
 Evaluate the cost based on your actual workload.
