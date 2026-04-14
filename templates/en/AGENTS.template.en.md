@@ -4,7 +4,6 @@
 
 1. During the communication and dialogue process, all thoughts, analysis, explanations, and responses must be in English.
 2. **Skills First** —— Prioritize using Skills to drive problem-solving.
-3. When answering questions about configuration, execution priority, timeout waiting, or tool behavior, prioritize quoting real code locations (`file#method:line`).
 
 
 ---
