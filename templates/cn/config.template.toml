@@ -38,12 +38,10 @@ developer_instructions = """
 
 # 模型提供方（后端路由/供应商标识）
 model_provider = "cch"
-# 具体使用的模型名称
+# 具体使用的模型名称 5.5 太贵了，这里我还是推荐 5.4
 model = "gpt-5.4"
 # 推理强度：日常任务推荐 medium，复杂任务可临时切 high
 model_reasoning_effort = "medium"
-# 规划模式下的推理强度：推荐 high，降低方向性错误
-plan_mode_reasoning_effort = "high"
 
 # 沙箱模式：workspace-write = 可读全项目、可写工作区
 sandbox_mode = "workspace-write"
@@ -90,46 +88,9 @@ max_threads = 8
 # 子代理最大递归深度：1 = 只允许一层，避免“子代理再开子代理”
 max_depth = 1
 
-# 只读探索型子代理（沙箱限制为 read-only，无法修改项目文件）
-[agents.explorer]
-description = """
-只读探索型子代理（沙箱限制为 read-only，无法修改项目文件）。
-
-使用 explorer：
-- 目标是理解、确认、定位、取证
-- 需要查调用链、配置生效、真实行为、代码归属
-- 需要并行回答多个彼此独立的代码问题
-- 预期结果是事实性结论（位置、调用链、配置值、行为验证），而非代码补丁
-
-不要使用 explorer：
-- 已明确要改代码、补测试、修缺陷
-- 已经具备清晰文件边界并需要产出补丁
-"""
-config_file = "agents/explorer.toml"
-
-# 限定范围的实现型子代理（仅在主代理指定的文件/模块边界内修改）
-[agents.worker]
-description = """
-限定范围的局部实现型子代理（仅在主代理指定的文件/模块边界内修改局部任务）。
-
-使用 worker：
-- 已明确要改代码、补测试、修缺陷、实现功能
-- 可以清楚指定文件范围、模块 ownership 或交付边界
-- 任务是局部性的，依赖关系清晰，改动不波及全局
-- 预期结果必须包含实际改动，而不只是分析结论
-
-不要使用 worker：
-- 目标或文件边界尚不明确，仍需先做只读调查和事实确认
-- 任务涉及全局共享模块、框架层、基础设施层的创建或修改
-- 需要修改全局配置、全局状态、全局常量
-- 需要做项目初始化、脚手架搭建、目录结构重组
-- 改动影响面超出单个模块边界或需要协调全局状态
-"""
-config_file = "agents/worker.toml"
 
 [memories]
 # 阶段 1：从单个对话线程中提取记忆时使用的模型
 extract_model = "gpt-5.4-mini"
 # 阶段 2：将多条线程记忆做归并 / 整理时使用的模型
 consolidation_model = "gpt-5.4-mini"
-

@@ -2,8 +2,11 @@
 
 ## 🎯 Basic Principles
 
-1. During the communication and dialogue process, all thoughts, analysis, explanations, and responses must be in English.
+1. During the communication and dialogue process, all thoughts, analysis, explanations, and responses must be in English, except for proper nouns and technical terms.
 2. **Skills First** —— Prioritize using Skills to drive problem-solving.
+3. **Sub-agents and Parallelism First** —— Prioritize using sub-agents / delegation / parallel agent work / spawn_agent to complete tasks.
+4. **Close Sub-agents Promptly** —— Remember to close sub-agents promptly after their tasks are completed to release resources.
+5. **Core Code Comments Required** —— Core code must have comments; core design decisions, state machine changes, and key details must be documented via comments in the code.
 
 
 ---
@@ -19,7 +22,7 @@
 
 **Code Quality**:
 - Pursue code readability and ease of understanding; do not over-abstract or over-encapsulate.
-- Necessary English comments for key flows, core logic, and difficult areas
+- Necessary English comments for key flows, core logic, and difficult areas.
 
 **Testing Requirements**
   - **Test-Driven** —— Testable design, unit test coverage.
@@ -57,7 +60,5 @@ Please confirm whether to continue? [Requires explicit "yes", "confirm", "contin
 ## ✅ Response Guidelines
 
 - **Brief Summary** —— Attach a short summary after complex content to reiterate core points
-- **Execution First** —— Tasks that can be progressed must be executed directly; actions must not be replaced by suggestions;
-- **Guide Next Steps** —— Only at the end of consultative Q&A, follow-up suggestions or action guides may be provided
-
----
+- **Execution First** —— Tasks that can be progressed must be executed directly; actions must not be replaced by suggestions
+- **Guide Next Steps** —— At the end of the goal, follow-up suggestions or action guides should be provided

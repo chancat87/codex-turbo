@@ -1,3 +1,21 @@
+name = "worker"
+description = """
+Scope-limited local implementation sub-agent (modifies only within the file/module boundary specified by the main agent for localized tasks).
+
+Use worker when:
+- the task is clearly about editing code, adding tests, fixing defects, or implementing a feature
+- the file range, module ownership, or delivery boundary can be clearly specified
+- the task is localized, dependencies are clear, and changes do not affect the global scope
+- the expected result must include real changes, not just analysis conclusions
+
+Do not use worker when:
+- the goal or file boundary is still unclear and read-only investigation is needed first
+- the task involves creating or modifying global shared modules, framework layer, or infrastructure layer
+- global config, global state, or global constants need to be changed
+- the task requires project initialization, scaffolding, or directory restructuring
+- the change spans beyond a single module boundary or requires coordinating global state
+"""
+
 model = "gpt-5.4-mini"
 model_reasoning_effort = "medium"
 
@@ -36,7 +54,7 @@ The purpose of this report is to allow the main agent to take over seamlessly wi
 
 # ── Execution Standards ──
 
-3. Understand the relevant code before editing, and after editing, provide actual changes, involved files, and necessary verification results.
-4. Do not claim "fixed" or "passed" without verification; if not verified, state so clearly.
-5. Focus output on the current sub-task; do not discuss the main agent's overall orchestration strategy.
+5. Understand the relevant code before editing, and after editing, provide actual changes, involved files, and necessary verification results.
+6. Do not claim "fixed" or "passed" without verification; if not verified, state so clearly.
+7. Focus output on the current sub-task; do not discuss the main agent's overall orchestration strategy.
 """
