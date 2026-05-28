@@ -28,20 +28,13 @@ diff -u ~/.codex/AGENTS.md templates/cn/AGENTS.template.md
 ## 3. `config.toml` 至少合并这些关键块
 
 - `developer_instructions`
-- `[agents.explorer]`
-- `[agents.worker]`
 - `[features]`
-- `[agents]`
+- `[agents]`（注意：自 `v1.7.0` 起，主配置中冗余的子代理 `[agents.explorer]` 与 `[agents.worker]` 区块已废弃并删除，合并时无需保留）
 - `[memories]`
 
-## 4. 同步关联文件（强制检查项），不要只改主配置
+## 4. 同步子代理与技能文件，不要遗漏
 
-`[agents.explorer]` 和 `[agents.worker]` 中的这两行属于必合并项：
-
-- `config_file = "agents/explorer.toml"`
-- `config_file = "agents/worker.toml"`
-
-因此，下面这些文件也必须同时存在：
+自 `v1.7.0` 起，虽然在主 `config.toml` 中已彻底废弃了子代理显式区块（改为由程序在 `agents/` 目录下自动扫描加载），但这些子代理的真实 TOML 配置文件及终端对话 Skill 文件仍必须同步存在：
 
 ```bash
 mkdir -p ~/.codex/agents ~/.codex/skills/terminal-dialog-style
@@ -53,8 +46,8 @@ cp templates/cn/skills/terminal-dialog-style/SKILL.md ~/.codex/skills/terminal-d
 ## 5. 合并完成后，做一次快速自检
 
 ```bash
-# 检查 config.toml 关键块和 config_file 声明
-rg -n "developer_instructions|\[agents\.explorer\]|\[agents\.worker\]|\[features\]|\[agents\]|\[memories\]|config_file" ~/.codex/config.toml
+# 检查 config.toml 关键配置块
+rg -n "developer_instructions|\[features\]|\[agents\]|\[memories\]" ~/.codex/config.toml
 
 # 检查关联文件是否存在
 test -f ~/.codex/agents/explorer.toml && echo "OK: agents/explorer.toml"
@@ -67,7 +60,7 @@ ls -R ~/.codex/agents ~/.codex/skills
 
 预期结果：
 
-- 第一个命令应至少匹配出这些块或字段：`developer_instructions`、`[agents.explorer]`、`[agents.worker]`、`[features]`、`[agents]`、`[memories]`、`config_file`
+- 第一个命令应至少匹配出这些关键配置块：`developer_instructions`、`[features]`、`[agents]`、`[memories]`
 - 后三个 `test -f` 命令都应输出对应的 `OK: ...`
 - 如果 `ls -R` 报 `No such file or directory`，说明关联目录没有准备完整，需要回到上一步补齐
 

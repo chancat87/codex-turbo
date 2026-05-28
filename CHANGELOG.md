@@ -1,5 +1,133 @@
 # 发布日志
 
+## v1.7.0 - 2026-05-28
+
+### 🎯 版本主题
+- **适配 Codex CLI v0.134.0** - 升级并适配最新版本的特性与行为约束
+- **终端对话风格支持 Markdown 原生渲染** - 废弃旧的 ASCII 表格手绘要求，全面转向 Markdown 表格，并禁用在终端绘制 ASCII 框线表格
+- **英文模板无语言后缀规范** - 废弃 `.en` 文件名后缀，通过 `templates/en` 路径本身表示语言，结构更加纯净统一
+- **子代理职责与描述补全** - 双语补全 `explorer` 与 `worker` 的 `name` 和 `description` 以支持最新的选人标准
+
+---
+
+### ✨ 核心更新
+
+#### 1️⃣ 终端对话风格 (terminal-dialog-style) 升级 Markdown 表格原生渲染（重要变更）
+
+**变更原因**：从 Codex CLI v0.134.0 版本开始，终端已经原生且良好地支持了 Markdown 标准表格语法的渲染。手绘 ASCII 框线表格不仅耗费大量 Token 且排版繁琐。
+
+**主要调整**：
+- **规范升级**：将原先在终端中“禁用 Markdown 表格，改用 ASCII 框线表格”的规范全面修改为“推荐使用标准 Markdown 表格展示结构化数据，严禁在终端中使用 ASCII 框线表格手动绘制表格”。
+- **文件降级条件**：新增一条判定，如果在表格单元格中包含任何文件引用（如 `xxx.py:L10-L20`），由于文件引用列宽不可控会撑爆排版，则必须放弃整张表格，自动降级为分块卡片展示。
+- **示例全面更新**：重构了 terminal-dialog-style 中的所有Few-shot输出示例，将原有的 ASCII 框线表格替换为漂亮的标准 Markdown 表格，并补充了文件引用降级卡片以及纵向大写标号层级结合 ASCII 流程图的高级 Few-shot。
+
+**涉及文件**：
+- `templates/cn/skills/terminal-dialog-style/SKILL.md`
+- `templates/en/skills/terminal-dialog-style/SKILL.md`
+
+#### 2️⃣ 英文模板资产目录精简与重命名
+
+- **废弃文件名后缀**：去除了英文模板中不必要的 `.en` 语言后缀。将 `AGENTS.template.en.md` 改名为 `AGENTS.template.md`，将 `config.template.en.toml` 改名为 `config.template.toml`。
+- **结构对齐**：英文模板目录 `templates/en/` 与中文版 `templates/cn/` 在文件名和文件夹层级上实现了 100% 对齐。
+
+**涉及文件**：
+- `templates/en/AGENTS.template.md` [NEW]
+- `templates/en/config.template.toml` [NEW]
+- `templates/en/AGENTS.template.en.md` [DELETE]
+- `templates/en/config.template.en.toml` [DELETE]
+
+#### 3️⃣ 子代理配置选项补全与汉字全覆盖
+
+- **补全选人标准描述**：由于旧版 English toml 配置中缺少子代理的元数据描述，本次为 `explorer.toml` 和 `worker.toml` 同步补齐了 `name` 和 `description` 块，有助于 Codex CLI 在智能分发任务时提供准确的选人判定。
+- **规则细化**：在 `explorer.toml` 中强调，子代理在收集证据输出时，文件路径必须是绝对全路径；在 `worker.toml` 中更新并翻译了严谨的局部任务边界界定法则与中途受阻时的交接协议（Handover Protocol）模板。
+
+**涉及文件**：
+- `templates/cn/agents/explorer.toml`
+- `templates/cn/agents/worker.toml`
+- `templates/en/agents/explorer.toml`
+- `templates/en/agents/worker.toml`
+
+#### 4️⃣ 全局共享规范（AGENTS.template.md）更新
+
+- **新增三条核心基本原则**：
+  - 3. **并行与子代理优先**：优先使用 sub-agents、spawn_agent 完成独立任务。
+  - 4. **及时释放配额**：任务完成后主智能体必须及时关闭子代理以释放线程配额。
+  - 5. **核心代码注释规范**：核心流程、设计、状态机变更必须有简体中文（或英文版对应的英文）注释。
+- **响应契约宽限**：调整了“引导下一步”响应规范的适用范围，由原来的“仅在咨询类问答结束时”调整为“在目标任务结束时，给出后续建议或行动指南”。
+
+**涉及文件**：
+- `templates/cn/AGENTS.template.md`
+- `templates/en/AGENTS.template.md`
+
+#### 5️⃣ 子代理显式配置彻底废弃与参数微调（重要）
+
+- **彻底废弃主配置中的子代理声明**：自 `v0.134.0` 版本起，Codex CLI 已经支持**自动扫描并加载 `agents/` 目录下的所有子代理配置文件**。因此，已在 `config.template.toml` 主配置文件中彻底删除了 `[agents.explorer]` 和 `[agents.worker]` 区块（包括关联的 `config_file` 路径定义与长文本描述）。所有子代理的元数据、职责范围与执行指令完全且唯一地在 `agents/explorer.toml` 与 `agents/worker.toml` 中集中维护，主配置结构达到前所未有的极致清爽。
+- 优化了 `config.template.toml` 中的注释信息。
+- 移除了已废弃的规划模式专属强度配置 `plan_mode_reasoning_effort`。
+
+**涉及文件**：
+- `templates/cn/config.template.toml`
+- `templates/en/config.template.toml`
+
+---
+
+### 📊 统计数据
+
+**文件变更：**
+- 新增 2 个文件（无语言后缀的英文 templates 文件）
+- 删除 2 个旧的带 `.en` 后缀的文件
+- 总计修改/新建 12 个文件
+- 净增加约 149 行，删除约 87 行（中文部分）并完全同步至英文版。
+
+---
+
+### 📋 升级指南
+
+#### 从 v1.6.0 升级
+
+1. **拉取最新代码**
+   ```bash
+   git pull origin main
+   ```
+
+2. **重新复制并覆盖最新配置模板（关键步骤）**
+   由于本次版本直接将 `.en` 后缀去除，且表格规范与子代理规范变化较大，建议您重新覆盖 ~/.codex 的模板配置：
+   
+   **中文场景**：
+   ```bash
+   cp templates/cn/AGENTS.template.md ~/.codex/AGENTS.md
+   cp templates/cn/config.template.toml ~/.codex/config.toml
+   cp -r templates/cn/agents/* ~/.codex/agents/
+   cp -r templates/cn/skills/* ~/.codex/skills/
+   ```
+
+   **英文场景**：
+   ```bash
+   cp templates/en/AGENTS.template.md ~/.codex/AGENTS.md
+   cp templates/en/config.template.toml ~/.codex/config.toml
+   cp -r templates/en/agents/* ~/.codex/agents/
+   cp -r templates/en/skills/* ~/.codex/skills/
+   ```
+
+3. **清理旧的带语言后缀的文件**
+   如果您本地之前保留了 `config.template.en.toml` 或 `AGENTS.template.en.md` 的副本，建议将其清理，以保证环境统一。
+
+---
+
+### ⚠️ 注意事项
+
+1. **终端表格不要再手绘 ASCII** - Codex CLI v0.134.0 已原生渲染 Markdown 表格。继续使用手绘 ASCII 表格不仅有碍阅读，还会浪费大量的输入输出 Token。
+2. **文件引用触发降级卡片** - 在 Markdown 表格中填入文件名加行号（如 `xxx.py:L10-L20`）极易导致列宽溢出使终端错位，这是强降级为分块卡片的唯一约束。
+3. **废弃主配置子代理区块并清理旧版配置** - 自 v0.134.0 版本起，主配置 `config.toml` 中已**彻底废弃并删除了关于子代理的 `[agents.explorer]` 与 `[agents.worker]` 整个区块（系统将自动扫描并加载 agents/ 目录下的配置）**。如果您本地之前自定义过这两个区块，请直接删除它们。同时请务必重新同步 `agents/` 下最新的子代理 TOML 配置文件，确保子代理携带完整的 `name` 和 `description` 元数据以完成智能分发。
+
+---
+
+> 📅 **发布日期**: 2026-05-28
+> 📌 **版本**: v1.7.0
+> 🎯 **主题**: 适配 v0.134.0 版本、Markdown 表格原生渲染与英文命名无后缀重构
+
+---
+
 ## v1.6.0 - 2026-04-14
 
 ### 🎯 版本主题

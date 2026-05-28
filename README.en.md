@@ -6,7 +6,7 @@ This repository is a set of personal Codex CLI configuration templates. Adhering
 
 > 💡 **Not sure how to apply it?** You can send this repository URL to an AI assistant (such as Claude Code CLI or Codex CLI) and let it help merge or create templates based on your needs.
 
-> Current compatible version: **Codex CLI v0.120.0**
+> Current compatible version: **Codex CLI v0.134.0**
 
 
 ## Key Points
@@ -30,20 +30,23 @@ After applying the `terminal-dialog-style` skill, the console output structure b
 .
 ├── README.md                  # Chinese documentation
 ├── README.en.md               # English documentation (this page)
-└── templates/
-    ├── cn/                        # Chinese templates
-    │   ├── AGENTS.template.md         # Principles and output style
-    │   ├── config.template.toml       # System config template
-    │   ├── agents/                    # Sub-agent configs
-    │   │   ├── explorer.toml
-    │   │   └── worker.toml
-    │   └── skills/                    # Skill templates
-    │       └── terminal-dialog-style/
-    └── en/                        # English templates
-        ├── AGENTS.template.en.md
-        ├── config.template.en.toml
-        ├── agents/
-        └── skills/
+    └── templates/
+        ├── cn/                        # Chinese templates
+        │   ├── AGENTS.template.md         # Principles and output style
+        │   ├── config.template.toml       # System config template
+        │   ├── agents/                    # Sub-agent configs
+        │   │   ├── explorer.toml
+        │   │   └── worker.toml
+        │   └── skills/                    # Skill templates
+        │       └── terminal-dialog-style/
+        └── en/                        # English templates
+            ├── AGENTS.template.md         # Developer principles & output style
+            ├── config.template.toml       # System config template
+            ├── agents/                    # Sub-agents config
+            │   ├── explorer.toml
+            │   └── worker.toml
+            └── skills/                    # Skills template
+                └── terminal-dialog-style/
 ```
 
 **Related Docs**
@@ -67,12 +70,14 @@ This repository provides the following template files:
 
 | File | Purpose | Target Location |
 |------|---------|-----------------|
-| `templates/en/config.template.en.toml` | Core system configuration (including `developer_instructions`) | `~/.codex/config.toml` |
-| `templates/en/AGENTS.template.en.md` | Development principles and output style guide | `~/.codex/AGENTS.md` |
+| `templates/en/config.template.toml` | Core system configuration (including `developer_instructions`) | `~/.codex/config.toml` |
+| `templates/en/AGENTS.template.md` | Development principles and output style guide | `~/.codex/AGENTS.md` |
 | `templates/en/agents/` | Sub-agent configuration (`explorer`, `worker`) | `~/.codex/agents/` |
 | `templates/en/skills/` | Skill templates (such as `terminal-dialog-style`) | `~/.codex/skills/` |
 
 > Complete `config.toml` with your own provider-specific keys and settings.
+> 
+> ⚠️ **Configuration Optimization Tip**: Starting from `v1.7.0`, the redundant `[agents.explorer]` and `[agents.worker]` sub-agent configuration blocks have been completely deprecated and removed from `config.toml` (the CLI will automatically scan and load configurations from the `agents/` directory). All sub-agent boundaries, selectors, and instructions are solely defined and maintained in their respective TOML files, making the main configuration file incredibly minimal.
 
 **First-time use (direct copy)**:
 
@@ -81,8 +86,8 @@ This repository provides the following template files:
 mkdir -p ~/.codex
 
 # Copy the core configuration files
-cp templates/en/AGENTS.template.en.md ~/.codex/AGENTS.md
-cp templates/en/config.template.en.toml ~/.codex/config.toml
+cp templates/en/AGENTS.template.md ~/.codex/AGENTS.md
+cp templates/en/config.template.toml ~/.codex/config.toml
 
 # Copy agent and skill directories
 cp -r templates/en/agents ~/.codex/
@@ -91,7 +96,7 @@ cp -r templates/en/skills ~/.codex/
 
 **Existing configuration (manual merge)**: → See [Migration Guide](./docs/manual-merge.en.md)
 
-> Note: This document is adapted for Codex CLI `v0.120.0`. Field names may differ across versions or providers, so always confirm against your local CLI.
+> Note: This document is adapted for Codex CLI `v0.134.0`. Field names may differ across versions or providers, so always confirm against your local CLI.
 
 
 ## FAQ
@@ -125,7 +130,7 @@ No. It is a starting-point template — best tailored progressively to your own 
 
 ## Disclaimer
 
-This repository provides configuration methodology and template references, verified against Codex CLI `v0.120.0`.
+This repository provides configuration methodology and template references, verified against Codex CLI `v0.134.0`.
 
 **Cost Note**: Multi-agent mode may increase token usage by around 20% to 30%. Evaluate the cost based on your actual workload.
 

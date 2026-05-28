@@ -6,7 +6,7 @@
 
 > 💡 **不知道如何操作？** 可以将以项目地址发送给 AI 助手（如 Claude Code CLI、Codex CLI 等），让其根据你的实际情况协助合并或新建。
 
-> 当前项目适配版本：**Codex CLI v0.120.0**
+> 当前项目适配版本：**Codex CLI v0.134.0**
 
 
 ## 核心要点
@@ -40,10 +40,13 @@
     │   └── skills/                    # 技能模板
     │       └── terminal-dialog-style/
     └── en/                        # English Templates
-        ├── AGENTS.template.en.md
-        ├── config.toml.en.example
-        ├── agents/
-        └── skills/
+        ├── AGENTS.template.md         # Developer principles & output style
+        ├── config.template.toml       # System config template
+        ├── agents/                    # Sub-agents config
+        │   ├── explorer.toml
+        │   └── worker.toml
+        └── skills/                    # Skills template
+            └── terminal-dialog-style/
 ```
 
 **相关文档**
@@ -73,6 +76,8 @@ cd codex-turbo
 | `templates/cn/skills/` | 技能模板（terminal-dialog-style 等） | `~/.codex/skills/` |
 
 > config.toml 请根据服务商的要求自行完善 key 等供应商信息。
+> 
+> ⚠️ **配置优化提示**：自 `v1.7.0` 起，已彻底将原主 `config.toml` 配置文件中冗余的子代理 `[agents.explorer]` 和 `[agents.worker]` 区块完整废弃并删除（程序会自动扫描并载入 `agents/` 目录下的配置）。所有子代理相关的职责边界、元数据与执行规范完全由其 TOML 配置文件内部单独定义与维护，保持了主配置极简化。
 
 **首次使用（直接复制）**：
 
@@ -91,7 +96,7 @@ cp -r templates/cn/skills ~/.codex/
 
 **已有配置（手动合并）**：→ 详见 [配置迁移指南](./docs/manual-merge.md)
 
-> 说明：本文档按 Codex CLI `v0.120.0` 适配；不同版本或供应商字段名可能有差异，请以你本地 CLI 支持为准。
+> 说明：本文档按 Codex CLI `v0.134.0` 适配；不同版本或供应商字段名可能有差异，请以你本地 CLI 支持为准。
 
 
 ## 常见问题
@@ -125,7 +130,7 @@ cp -r templates/cn/skills ~/.codex/
 
 ## 免责声明
 
-本仓库提供的是配置方法论与模板参考，基于 Codex CLI `v0.120.0` 验证。
+本仓库提供的是配置方法论与模板参考，基于 Codex CLI `v0.134.0` 验证。
 
 **成本提示**：多智能体并发模式下，Token 消耗可能上升 20%~30%，请根据实际情况合理评估使用。
 
