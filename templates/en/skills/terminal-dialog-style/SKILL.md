@@ -11,7 +11,7 @@ description: Use when chatting in terminal, especially in terminal-first technic
 Output responses using terminal-friendly formatting: strong visual boundaries, vivid, concise, short sentences, clear structure, and emphasized key points.
 The goal is to ensure both technical and business readers can quickly understand and take action.
 
-**Core Principle**: Use **strong visual boundaries** (headers, separators) to organize content.
+**Core Principle**: Use **strong visual boundaries** (headers, separators, tables) to organize content.
 
 
 ## When to Use
@@ -39,29 +39,27 @@ Execute in the following order:
 ## ⚡ Quick Rules
 
 - Give conclusions first, then evidence; long responses MUST start with `> 🎯 TL;DR`.
-- Use `>` blockquotes to highlight key judgments, risk warnings, exceptions, and side notes.
+- Highlight key judgments, risk warnings, exceptions, and side notes using `>` blockquotes.
 - Prefer posting key code snippets or Diffs when discussing source code; do not just provide line numbers.
 - Any source code, Diff, command, or log snippet of 2 or more lines MUST be wrapped in fenced code blocks (```); do NOT use indented text for code blocks.
 - Use only short names for paths: `AuthService.kt:L40-L55`.
-- **Prohibit Markdown tables**; use `+---+` ASCII tables only for short fields, statuses, or conclusions.
+- Recommend using standard Markdown tables to present structured data, ensuring alignment and readability.
 - Prioritize tables or diagrams for structured information; if a horizontal table doesn't fit, switch to a vertical block list.
 - For 3 or more consecutive field names/parameters/configs, prohibit raw vertical listing; use structured displays.
 - Prefer vertical ASCII diagrams for complex flows, hierarchies, or dependencies.
-- Use `**Bold Text**` for group headers; do NOT use `##` / `###`.
+- Use `**Bold Text**` for group headers; do NOT use `##` / `###`. Prefer using bold numbers (e.g., `**I. **`, `**II. **`) as primary headers, and `**1) **`, `**2) **`, `**3) **` as secondary headers.
 
 
 ## 🚨 CRITICAL RULES — MUST NOT VIOLATE
 
 The following rules have higher priority than all other specifications in this Skill and must not be violated under any circumstances:
 
-1. **Prioritize Code Display, Use Path References Sparingly** —— When providing analysis or modifications, the primary principle is to directly paste (or show as a Diff) core code snippets. Do not deliberately output only line numbers just to be "compliant."
-   - When you must specify the code source, it is strictly forbidden to output directory paths.
-   - ✅ `UserService.kt:L35-L68`
-   - ✅ `OrderService#createOrder():L20-L90`
-   - ❌ `src/main/kotlin/com/example/app/service/UserService.kt:35`
-   - ❌ `com.example.app.service.UserService`
-
-2. **Prohibit Markdown Table Syntax** —— Terminals cannot render `| xxx | yyy |`. Always use ASCII tables with `+---+` borders.
+- **Prioritize Code Display, Use Path References Sparingly** —— When providing analysis or modifications, the primary principle is to directly paste (or show as a Diff) core code snippets. Do not deliberately output only line numbers just to be "compliant."
+  - When you must specify the code source, it is strictly forbidden to output directory paths.
+  - ✅ `UserService.kt:L35-L68`
+  - ✅ `OrderService#createOrder():L20-L90`
+  - ❌ `src/main/kotlin/com/example/app/service/UserService.kt:35`
+  - ❌ `com.example.app.service.UserService`
 
 
 
@@ -78,8 +76,8 @@ The following rules have higher priority than all other specifications in this S
 - 📏 **Concise and Clear** —— Control single-line length to fit terminal width.
 - 📎 **Layered Quoting** —— Use `>` to separate tips, warnings, core summaries, or side notes from the main text.
 - 🔦 **Emphasis Blocks** —— Use `>` to create visual anchors for key judgments, risk warnings, exceptions, and side notes.
-- 🏷️ **Header Anchors** —— Prohibit `#` / `##` / `###` in terminal dialogues; universally use `**Bold Text**` for group headers.
-- ✂️ **Clear Points** —— Break long paragraphs into short sentences or bullet points to ensure "one point per idea."
+- 🏷️ **Header Anchors** —— Prohibit `#` / `##` / `###` in terminal dialogues; universally use bold groupings (e.g. `**I. **` as primary, `**1) **` as secondary).
+- ✂️ **Clear Points** —— Break long paragraphs into lists starting with `1. 2.` or `-` with proper indentations; unordered lists MUST start with `- ` to distinguish entries. Prohibit raw text list-pretending.
 - ⚡ **High-Density Output** —— Conclusion first, then evidence. Keep each point within 2-4 lines; avoid "speech-like" preambles.
 - 🖼️ **Visuals Over Words** —— Prioritize ASCII flowcharts/structure diagrams for complex processes.
 - 📝 **Short Summary** —— Attach a short summary at the end of complex content to reiterate core points.
@@ -109,7 +107,6 @@ The following rules have higher priority than all other specifications in this S
 
 **Recommended Template**:
 
-```text
 The core call is in GuardDetectionController.kt:L48-L57:
 
 ```kotlin
@@ -117,11 +114,9 @@ val res = guardManager.requestDetectionSampleSts(
     guardHttpMapper.toDetectionSampleStsCmd(sessionId)
 )
 ```
-```
 
 **🥇 Tier 1: Short Code (≤10 lines) → Paste original snippet directly**
 
-```text
 The permission interceptor only allows logged-in users:
 
   if (token == null || !tokenStore.isValid(token)) {
@@ -129,11 +124,9 @@ The permission interceptor only allows logged-in users:
   }
 
 Unauthenticated requests are intercepted here. (See AuthInterceptor.kt:L40)
-```
 
 **🥈 Tier 2: Long Code (>10 lines) → Excerpt core segments + Ellipses bridge**
 
-```text
 Amount ceiling logic (OrderService#calcTotalAmount):
 
   // ... iterate and accumulate subtotal ...
@@ -142,14 +135,11 @@ Amount ceiling logic (OrderService#calcTotalAmount):
       total = MAX_AMOUNT
   }
   return total
-```
 
 **🥉 Tier 3: Extremely long file, no need to expand source → Short path reference + Behavior description**
 
-```text
 The interceptor validates the token at AuthInterceptor.kt:L40-L55;
 If the token is null or invalid, it throws an UnauthorizedException, and the business method will not proceed.
-```
 
 **Only short names allowed for path references**:
 
@@ -160,24 +150,25 @@ If the token is null or invalid, it throws an UnauthorizedException, and the bus
 ❌ com.example.AuthInterceptor
 ```
 
+
 ## 📊 Structured Data and Visuals
 
 Focus on **visual organization of information** for comparisons, processes, hierarchies, etc.
 
 **Presentation Priority**:
 
-1. 📊 **ASCII Tables** —— Best for short fields, statuses, and conclusions.
+1. 📊 **Markdown Tables** —— Best for short fields, statuses, and conclusions; output directly in standard Markdown tables.
 2. 🌳 **ASCII Diagrams** —— Best for flows, hierarchies, and dependencies.
 3. 📋 **Block Lists / Cards** —— Best for long sentences, solution judgments, and risk descriptions.
 4. 📋 **Lists** —— Final fallback.
 
 **Table Principles**:
 
-- Field lists are naturally suited for "Name + Description" two-column tables, provided content is short and width is controlled.
+- Field lists are naturally suited for "Name + Description" two-column tables, provided content is short and width is controlled. Use standard Markdown tables to show them.
 - For 3 or more consecutive field names/parameters/configs, prohibit raw listing; use structured displays.
 - If any cell contains a long sentence explanation, recommendation reason, or risk judgment, abandon the table immediately and use a block list.
 - If the overall width is too wide (suggested >80 chars), do not force a table; switch to a vertical structure.
-- Prohibit "fake" tables that carry no content, e.g., `+---+---+---+`.
+- **🚨 File Reference Triggers Force Downgrade**: If any cell contains a file reference (e.g. `xxx.py:L10-L20`), regardless of length or quantity, abandon the entire table immediately and switch to a block list / card.
 
 **Downgrade Order**:
 
@@ -186,14 +177,16 @@ Focus on **visual organization of information** for comparisons, processes, hier
 3. Unordered lists
 4. Normal paragraphs
 
+
 ## ❌ Common Mistakes
 
 - 🚫 **Using `##` headers in dialogues** —— Terminal dialogues should use bold groupings.
-- 🚫 **Using Markdown tables in the terminal** —— Must change to ASCII tables or block lists.
+- 🚫 **Using ASCII border tables in the terminal** —— CLI natively supports Markdown tables; do not manually draw tables with `+---+`.
 - 🚫 **Using indented text as code blocks** —— Consecutive lines of code, Diffs, commands, or logs MUST be wrapped in ```.
-- 🚫 **Using placeholder borders for tables** —— Borders like `+---+---+---+` that cannot accommodate real content width are formatting errors.
 - 🚫 **Paths containing directory prefixes** —— Must use only filenames, whether inline or in lists.
 - 🚫 **Large blocks of pure text** —— Lack of visual anchors makes it impossible for readers to quickly locate info.
+- 🚫 **Unordered lists missing `-` prefixes** —— When listing pros/cons, features, or enums, each entry must start with `- `. Raw vertical text blocks do not constitute a list, making boundaries unreadable.
+
 
 ## 📝 Output Examples
 
@@ -238,53 +231,33 @@ Recommended to add status validation after fetching the user:
 
 **⚖️ 1) Quick Solution Comparison**
 
-```text
-+----------+--------+--------+--------+
-| Item     | Plan A | Plan B | Plan C |
-+----------+--------+--------+--------+
-| Name     | Full   | Gateway| Test   |
-| Complex  | High   | Medium | Low    |
-| Scope    | Multi  | Gateway| Test   |
-| Rollback | High   | Medium | Low    |
-| Rating   | 4/10   | 9/10   | 6/10   |
-+----------+--------+--------+--------+
-```
+| Item | Plan A | Plan B | Plan C |
+| :--- | :--- | :--- | :--- |
+| Name | Full Modify | Gateway Intercept | Add Tests Only |
+| Complexity | High | Medium | Low |
+| Scope | Multi-module | Gateway layer | Test layer |
+| Rollback Cost | High | Medium | Low |
+| Rating | 4/10 | 9/10 | 6/10 |
 
 **📋 2) Compressed Field List**
 > ⚠️ **Note**
 > Field lists are naturally "Name + Description" two-column structures. Prohibit raw listing for 3+ fields.
 
-```text
-❌ Don't output like this:
-
-subject
-headers_json
-payload_json
-retry_count
-
-✅ Output like this:
-
-+--------------+----------------------------------+
-| Field        | Description                      |
-+--------------+----------------------------------+
-| subject      | Routing field for infrastructure |
-| headers_json | Header snapshot for relay replay |
-| payload_json | Body snapshot; avoid main table  |
-| retry_count  | Retry count for scheduling status|
-+--------------+----------------------------------+
-```
+| Field | Description |
+| :--- | :--- |
+| subject | Routing field for message delivery infrastructure |
+| headers_json | Header snapshot serving relay replays |
+| payload_json | Body snapshot; avoid polluting business main tables |
+| retry_count | Retry count for scheduling status |
 
 **🧩 2.1) Don't force long judgments into tables**
 
-```text
-❌ Not recommended: Short borders, but long cell content
+❌ Not recommended: Long cell content makes tables unreadable in the terminal
 
-+---+---+---+
 | Plan | Action | Judgment |
-+---+---+---+
+| :--- | :--- | :--- |
 | A | Move Controller call to Service | Cleaner structure, but same auth model |
-| B | Server generates unique objectKey + STS | Recommended, aligns with detection |
-+---+---+---+
+| B | DB also switched to server-generated unique objectKey + single-object STS | Recommended, aligns with detection, least privilege |
 
 ✅ Recommended: Switch to vertical solution cards
 
@@ -293,30 +266,78 @@ Plan A
 - Judgment: Cleaner structure, but same auth model
 
 Plan B
-- Action: Server generates unique objectKey + STS
-- Judgment: Recommended, aligns with detection
-```
+- Action: DB also switched to server-generated unique objectKey + single-object STS
+- Judgment: Recommended, aligns with detection, least privilege
+
+**🧩 2.2) Force Downgrade on File References**
+
+❌ Not recommended: File reference crammed into cell, breaking column width and terminal layout
+
+| ID | Location | Severity | Conclusion |
+| :--- | :--- | :--- | :--- |
+| #2 | `redis_sink.py:L288-L302`, `redis_sink.py:L366-L395` | P1 | Failed logs re-queue when Redis continues to fail, close() hangs at queue.join() |
+
+✅ Recommended: Switch to block cards; file reference occupies its own line
+
+**#2 Reliability/Resource Leak** `P1`
+- Location: `redis_sink.py:L288-L302` / `redis_sink.py:L366-L395`
+- Conclusion: Failed logs re-queue when Redis continues to fail, `close()` hangs at `queue.join()`
 
 ---
 
 **Example 3: Flow relationships prioritized as vertical ASCII diagrams**
 
 > 🎯 **TL;DR**
-> Multi-step chains should expand vertically to avoid excessive width.
+> Hierarchical structures expand with primary bold markers; flow links embed within layers to show execution sequence clearly.
+
+**I. What problem does it solve?**
+
+The core issue centers on RBAC "Data Permissions" (row-level security). It is not about whether a user can call the API, but rather which data they can manipulate after calling it. The full execution sequence is as follows:
 
 ```text
-[ 📱 Client ]
-      │
-      ▼ (1. POST initiates delivery)
-[ 🛡️ Gateway API ]
-      │
-      ├─▶ (2. Token invalid: Returns 401)
-      │
-      ▼ (3. Assemble message body)
-[ 📨 Delivery Execution ]
-      │
-      ├─▶ (4. Async processing) ──▶ [ Msg Queue ]
-      │
-      ▼ (5. Return 202)
-[ Response to Client ]
+[ Client Request ]
+       │
+       ▼
+[ API Gateway ]
+       │
+       ├─▶ Token invalid ──▶ Return 401
+       │
+       ▼ (Token valid)
+[ Permission Interceptor ]
+       │
+       ▼ (Resolve role dataScope)
+[ Data Permission Engine ]
+       │
+       ├─▶ ALL          ──▶ No row-level filtering
+       ├─▶ DEPT         ──▶ Append dept_id = ?
+       ├─▶ DEPT_CHILD   ──▶ Append dept_id IN (descendants)
+       └─▶ ONLY_SELF    ──▶ Append user_id = ?
+       │
+       ▼
+[ Concatenate conditions -> Execute SQL ]
 ```
+
+Through interception, the role's dataScope is converted into concrete deptIds / userOnly query constraints.
+
+**II. What are the limitations?**
+
+**1) Single Dimension —— Dept is the only isolation axis**
+
+The entire solution centers on dept_id. If isolation by project, tenant, or region is needed, this mechanism cannot express it and must be hard-coded.
+
+**2) Fixed Granularity —— Row-level only, no column-level support**
+
+Can only control "which rows are visible," failing to satisfy strong security boundaries like column-level masking.
+
+**3) Heavy Reliance on Developer Consciousness —— Non-low-level global interception**
+
+Forgetting to call the engine will cause the protection to fail immediately, risking privilege escalation.
+
+**III. When is it suitable to use?**
+
+- Backoffice systems with stable structures and single-dimension permissions.
+- Medium-sized teams where fine-grained auditing is not required.
+- Existing MyBatis/JPA setups where modification costs are manageable.
+
+> ⚠️ **Note**
+> Once permission dimensions go beyond the "dept tree" or require column-level controls, this solution will fall short. We recommend evaluating policy engines or ABAC in advance.
